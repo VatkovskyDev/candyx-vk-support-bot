@@ -9,8 +9,8 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 import g4f
 
-VERSION = "0.3.0-CACHING"
-CODE_NAME = "Caching"
+VERSION = "0.3.1-SPEAKING"
+CODE_NAME = "Speaking"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -258,9 +258,9 @@ class CandyxPEBot:
     def _get_user_info(self, user_id: int):
         try:
             user = self.vk.users.get(user_ids=user_id)[0]
-            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}] | [Диалог|https://vk.com/im?sel={user_id}]"
+            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}]\n📨 Диалог: [Перейти|https://vk.com/gim230630628?sel={user_id}]"
         except Exception:
-            return f"\n👤 Пользователь: [id{user_id}|id{user_id}] | [Диалог|https://vk.com/im?sel={user_id}]"
+            return f"\n👤 Пользователь: [id{user_id}|id{user_id}]\n📨 Диалог: [Перейти|https://vk.com/gim230630628?sel={user_id}]"
 
     def is_agent(self, user_id: int):
         return f"{user_id}" in self.agents
@@ -601,7 +601,7 @@ class CandyxPEBot:
                 new_lang := "en" if lang == "ru" else "ru",
                 self.user_languages.update({f"{user_id}": new_lang}),
                 self._save_file('candyxpe_languages.json', self.user_languages),
-                self._send_message(user_id, "lang_changed", self._get_keyboard("main", user_id), {"lang": "Русский" if new_lang == "ru" else "English"})
+                self._send_message(user_id, "lang_changed", self._get_keyboard("main", user user_id), {"lang": "Русский" if new_lang == "ru" else "English"})
             ),
             "end_ai": lambda: (
                 self.user_ai_mode.discard(user_id),
