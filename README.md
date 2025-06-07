@@ -1,6 +1,6 @@
 # 🍭 candyx-support-bot
 
-![version](https://img.shields.io/badge/Release-v0.2.7%20%22SMART%22-blue)
+![version](https://img.shields.io/badge/Release-v0.2.8%20%22VERY-STABLE%22-blue)
 
 **👤 Разработчик:** `vatkovskydev`  
  
