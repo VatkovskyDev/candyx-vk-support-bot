@@ -183,9 +183,6 @@ class CandyxPEBot:
     _ERROR_MSGS = {
         917: "❌ Сообщество не имеет прав администратора в чате.",
         912: "❌ Включите функцию чат-бота в настройках!",
-        27: "❌ Метод недоступен для токена сообщества.",
-        917: "❌ Сообщество не имеет прав администратора в чате.",
-        912: "❌ Включите функцию чат-бота в настройках!",
         27: "❌ Метод недоступен для токена сообщества."
     }
 
@@ -261,9 +258,9 @@ class CandyxPEBot:
     def _get_user_info(self, user_id: int):
         try:
             user = self.vk.users.get(user_ids=user_id)[0]
-            return f"\n👤 Профиль: [id{user_id}|{user['first_name']} {user['last_name']}]"
+            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}] | [Диалог|https://vk.com/im?sel={user_id}]"
         except Exception:
-            return f"\n👤 Профиль: [id{user_id}|id{user_id}]"
+            return f"\n👤 Пользователь: [id{user_id}|id{user_id}] | [Диалог|https://vk.com/im?sel={user_id}]"
 
     def is_agent(self, user_id: int):
         return f"{user_id}" in self.agents
@@ -710,7 +707,7 @@ class CandyxPEBot:
                 time.sleep(5)
 
 if __name__ == "__main__":
-    VK_TOKEN = os.getenv("VK_TOKEN", "vk1.a.IAJHsMURMhJUYjKv8vXQPcTBxd5bwprhsnvJU1MyZwSSgti0kCnTaKtOdB_qA8e5zdJ6q5fhjBeeVNJBs8yYrOyl7wo0ArOLddIIaEurZwQpnw9oJzrARoiGCnuYV7Scvl5JcgfLrXH7FJF20q00b0VeccLRL8I8bgDQ1CeJGMl3q3q4ZMliMN6KD2W2mOQ4HtJNmH64d7aK6P4_er0tJQ")
+    VK_TOKEN = "vk1.a.IAJHsMURMhJUYjKv8vXQPcTBxd5bwprhsnvJU1MyZwSSgtiUCGnTaKtOdB_qA8e5zdJ6q5fhjBeeVnBs8yYrOyl7wo0ArOLddIIaEurZwQpnw9oJzrARoiGCnuYV7Scvl5Jcg_fLrXH7FJF20q00b0VeccLRL8I8bgDQ1CeJGMl3q3q4ZMliMN6KD2W2mOQ4HtJNmH64d7aK6P4_er0tJQ"
     ADMIN_CHAT_ID = 1
     bot = CandyxPEBot(VK_TOKEN, ADMIN_CHAT_ID)
     bot.run()
