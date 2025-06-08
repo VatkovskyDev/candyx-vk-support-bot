@@ -10,7 +10,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 import g4f
 
-VERSION = "0.3.3-ALPHA"
+VERSION = "0.3.4-ALPHA"
 CODE_NAME = "Testing+Fixed"
 
 logging.basicConfig(
@@ -340,8 +340,12 @@ class CandyxPEBot:
             if int(uid) not in self.banned_users:
                 try:
                     ulang = self.user_languages.get(f"{uid}", "ru")
-                    self._send_message(int(uid), f"📢 {'Объявление' if ulang == 'ru' else 'Announcement'} CandyxPE:\n{cleaned_message}")
+                    self._send_message(int(uid), f"📢 {'Объявление' if ulang == 'ru' else 'Announcement'} CandyxPE:\n{cleaned_message}", self._get_keyboard("main", int(uid)), {"permission_check": self._check_user_permission(int(uid))})
                     sent_count += 1
+                except vk_api.exceptions.ApiError as e:
+                    if e.code != 901:
+                        failed.append(uid)
+                        logger.error(f"Ошибка отправки пользователю {uid}: {e}", extra={'user_id': user_id})
                 except Exception as e:
                     failed.append(uid)
                     logger.error(f"Ошибка отправки пользователю {uid}: {e}", extra={'user_id': user_id})
@@ -370,9 +374,30 @@ class CandyxPEBot:
         if info and info.get('attachment'):
             params['attachment'] = info['attachment']
         try:
-            self.vk.messages.send(**params)
+            if self._check_user_permission(user_id):
+                self.vk.messages.send(**params)
+            else:
+                logger.warning(f"Нет прав для отправки сообщения пользователю {user_id}", extra={'user_id': 'N/A'})
+                self._send_message(user_id, "error", self._get_keyboard("main", user_id), {"message": "Нет прав для отправки сообщения. Убедитесь, что разрешили боту писать вам."})
+        except vk_api.exceptions.ApiError as e:
+            if e.code == 901:
+                logger.warning(f"Ошибка 901: Нет прав для отправки пользователю {user_id}", extra={'user_id': 'N/A'})
+                self._send_message(user_id, "error", self._get_keyboard("main", user_id), {"message": "Нет прав для отправки сообщения. Убедитесь, что разрешили боту писать вам."})
+            else:
+                self._handle_error(user_id, e, "Ошибка отправки")
         except Exception as e:
             self._handle_error(user_id, e, "Ошибка отправки")
+
+    def _check_user_permission(self, user_id: int) -> bool:
+        try:
+            self.vk.messages.isMessagesFromGroupAllowed(user_id=user_id, group_id=self.vk_session.group_id)
+            return True
+        except vk_api.exceptions.ApiError as e:
+            if e.code == 901:
+                return False
+            raise
+        except Exception:
+            return True
 
     def _get_ai_response(self, user_id: int, message: str):
         lang = self.user_languages.get(f"{user_id}", "ru")
