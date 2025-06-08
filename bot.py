@@ -10,7 +10,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 import g4f
 
-VERSION = "0.3.7-ALPHA"
+VERSION = "0.3.7-BETA"
 CODE_NAME = "MASSIVE-RU-OPTIMIZED"
 
 logging.basicConfig(
