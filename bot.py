@@ -601,7 +601,7 @@ class CandyxPEBot:
                 new_lang := "en" if lang == "ru" else "ru",
                 self.user_languages.update({f"{user_id}": new_lang}),
                 self._save_file('candyxpe_languages.json', self.user_languages),
-                self._send_message(user_id, "lang_changed", self._get_keyboard("main", user user_id), {"lang": "Русский" if new_lang == "ru" else "English"})
+                self._send_message(user_id, "lang_changed", self._get_keyboard("main", user_id), {"lang": "Русский" if new_lang == "ru" else "English"})
             ),
             "end_ai": lambda: (
                 self.user_ai_mode.discard(user_id),
