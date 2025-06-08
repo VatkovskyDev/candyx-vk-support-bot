@@ -186,10 +186,10 @@ class CandyxPEBot:
     def _get_user_info(self, user_id):
         try:
             user = self.vk.call("users.get", user_ids=user_id)[0]
-            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}]\n📲 Диалог: https://vk.com/gim230630628?sel={user_id}"
+            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}]\n📲 Диалог: https://vk.com/gim230630628?sel={user_id}\nНезамедлительно рассмотрите обращение пользователя, в противном случае - предупреждение."
         except Exception as e:
             logger.error(f"Ошибка получения информации о пользователе {user_id}: {e}", extra={'user_id': user_id})
-            return f"\n👤 Пользователь: [id{user_id}|id{user_id}]\n📲 Диалог: https://vk.com/im?sel={user_id}"
+            return f"\n👤 Пользователь: [id{user_id}|id{user_id}]\n📲 Диалог: https://vk.com/im?sel={user_id}\nНезамедлительно рассмотрите обращение пользователя, в противном случае - предупреждение."
 
     def is_agent(self, user_id):
         return str(user_id) in self.agents
@@ -214,7 +214,7 @@ class CandyxPEBot:
             "action": [[{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "❌ Отмена"}, "color": "negative"}]],
             "admin": [
                 [{"action": {"type": "text", "payload": {"command": "manage_agents"}, "label": "👥 Управление агентами"}, "color": "primary"}],
-                [{"action": {"type": "text", "payload": {"command": "ban_user"}, "label": "⛔ Баны пользователей"}, "color": "negative"}],
+                [{"action": {"type": "text", "payload": {"command": "ban_user"}, "label": "⛔ Блокировка в системе"}, "color": "negative"}],
                 [{"action": {"type": "text", "payload": {"command": "broadcast"}, "label": "📢 Отправить объявление"}, "color": "positive"}],
                 [{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔙 Назад"}, "color": "negative"}]
             ],
@@ -396,7 +396,7 @@ class CandyxPEBot:
                 self.agents[str(agent_id)] = {"role": role}
                 self._save_file('candyxpe_agents.json', self.agents)
                 self._send_message(user_id, "agent_added", self._get_keyboard("admin", user_id), {"role": role.capitalize(), "agent_id": agent_id})
-                self._send_to_admin(user_id, f"{role.capitalize()} id{agent_id} назначен.", "add_agent")
+                self._send_to_admin(user_id, f"{role.capitalize()} @id{agent_id} назначен.", "add_agent")
             self.user_action_mode.pop(user_id, None)
         except ValueError:
             self._send_message(user_id, "invalid_format", self._get_keyboard("action", user_id), {"text": "<ID> <agent/admin/manager>", "example": "123456 agent"})
@@ -411,7 +411,7 @@ class CandyxPEBot:
                 del self.agents[str(agent_id)]
                 self._save_file('candyxpe_agents.json', self.agents)
                 self._send_message(user_id, "agent_removed", self._get_keyboard("admin", user_id), {"role": role.capitalize(), "agent_id": agent_id})
-                self._send_to_admin(user_id, f"{role.capitalize()} id{agent_id} снят.", "remove_agent")
+                self._send_to_admin(user_id, f"{role.capitalize()} @id{agent_id} снят.", "remove_agent")
             else:
                 self._send_message(user_id, "not_agent", self._get_keyboard("manage_agents", user_id), {"agent_id": agent_id})
             self.user_action_mode.pop(user_id, None)
