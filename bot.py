@@ -11,7 +11,7 @@ from vk_api.utils import get_random_id
 import g4f
 
 VERSION = "0.3.3-ALPHA"
-CODE_NAME = "Testing"
+CODE_NAME = "Testing+Fixed"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -68,7 +68,8 @@ class CandyxPEBot:
             "not_banned": "❌ id{target_id} не забанен.",
             "banned_user": "⛔ Вы заблокированы. Попробуйте позже.",
             "chat_unavailable": "❌ Админ-чат недоступен.",
-            "error": "❌ Ошибка. Попробуйте снова."
+            "error": "❌ Ошибка. Попробуйте снова.",
+            "get_agents": "📋 Список агентов:\n{agents_list}"
         },
         "en": {
             "welcome": "👋 Welcome to CandyxPE!\nChoose an action:",
@@ -109,14 +110,15 @@ class CandyxPEBot:
             "invalid_id": "❌ Enter a valid ID.",
             "self_ban": "❌ Cannot ban yourself.",
             "agent_ban": "❌ Cannot ban an agent.",
-            "banned": "⛔ id{target_id} banned for {hours} hours.",
+            "banned": "⛔ id{id} banned for {hours} hours.",
             "banned_notify": "⛔ You are banned for {hours} hours.",
             "unbanned": "✅ id{target_id} unbanned.",
             "unbanned_notify": "✅ You have been unbanned.",
             "not_banned": "❌ id{target_id} is not banned.",
             "banned_user": "⛔ You are banned. Try again later.",
             "chat_unavailable": "❌ Admin chat unavailable.",
-            "error": "❌ Error. Try again."
+            "error": "❌ Error. Try again.",
+            "get_agents": "📋 List of agents:\n{agents_list}"
         }
     }
 
@@ -458,6 +460,14 @@ class CandyxPEBot:
         except ValueError:
             self._send_message(user_id, "invalid_id", self._get_keyboard("action", user_id))
 
+    def _handle_get_agents(self, user_id: int):
+        lang = self.user_languages.get(f"{user_id}", "ru")
+        if not self.is_admin(user_id) or self.agents[f"{user_id}"]["role"] != "manager":
+            self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+            return
+        agents_list = "\n".join([f"@id{agent_id} - {role['role'].capitalize()}" for agent_id, role in self.agents.items()])
+        self._send_message(user_id, "get_agents", self._get_keyboard("manage_agents", user_id), {"agents_list": agents_list or "Нет агентов."})
+
     def _handle_ban(self, user_id: int, text: str):
         lang = self.user_languages.get(f"{user_id}", "ru")
         try:
@@ -584,7 +594,10 @@ class CandyxPEBot:
             "unban": lambda: (
                 self.user_action_mode.update({user_id: "unban"}),
                 self._send_message(user_id, "unban", self._get_keyboard("action", user_id))
-            ) if self.is_admin(user_id) else self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+            ) if self.is_admin(user_id) else self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id)),
+            "getagents": lambda: (
+                self._handle_get_agents(user_id)
+            ) if self.is_admin(user_id) and self.agents[f"{user_id}"]["role"] == "manager" else self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
         }
         commands.get(cmd, lambda: self._send_message(user_id, "unknown", self._get_keyboard("main", user_id)))()
 
@@ -598,6 +611,10 @@ class CandyxPEBot:
             self.banned_users = {uid: expiry for uid, expiry in self.banned_users.items() if datetime.now() < expiry}
             if user_id in self.banned_users:
                 self._send_message(user_id, "banned_user", self._get_keyboard("main", user_id))
+                return
+            if text.startswith('/'):
+                cmd = text[1:].lower()
+                self._handle_command(user_id, cmd)
                 return
             if hasattr(event, 'payload') and event.payload:
                 try:
