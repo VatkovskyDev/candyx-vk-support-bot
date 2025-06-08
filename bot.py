@@ -9,8 +9,8 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 import g4f
 
-VERSION = "0.3.1-BUGFREE"
-CODE_NAME = "Speaking"
+VERSION = "0.3.2-ALPHA"
+CODE_NAME = "Testing"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -258,7 +258,7 @@ class CandyxPEBot:
     def _get_user_info(self, user_id: int):
         try:
             user = self.vk.users.get(user_ids=user_id)[0]
-            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}]\n📨 Диалог: [Перейти|https://vk.com/gim230630628?sel={user_id}]"
+            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}]\n📨 Диалог: https://vk.com/gim230630628?sel={user_id}"
         except Exception:
             return f"\n👤 Пользователь: [id{user_id}|id{user_id}]\n📨 Диалог: [Перейти|https://vk.com/gim230630628?sel={user_id}]"
 
@@ -580,7 +580,7 @@ class CandyxPEBot:
             "contact_agent": lambda: (
                 self.user_human_mode.add(user_id),
                 self.user_ai_mode.discard(user_id),
-                self._send_to_admin(user_id, "Клиент подключён к агенту." if lang == "ru" else "Client connected.", "agent"),
+                self._send_to_admin(user_id, "Игрок подключён к агенту." if lang == "ru" else "Client connected.", "agent"),
                 self._send_message(user_id, "human_on", self._get_keyboard("human", user_id))
             ),
             "end_human": lambda: (
