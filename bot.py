@@ -52,10 +52,10 @@ class CandyxPEBot:
             "self_agent": "❌ Нельзя назначить себя.",
             "already_agent": "❌ id{agent_id} уже агент.",
             "agent_added": "✅ {role} id{agent_id} назначен.",
-            "agent_added_notify": "✅ Вы назначены {role}ом CandyxPE!",
+            "agent_added_notify": "",
             "self_remove": "❌ Нельзя снять роль с себя.",
             "agent_removed": "✅ {role} id{agent_id} снят.",
-            "agent_removed_notify": "❌ Вы больше не {role} CandyxPE.",
+            "agent_removed_notify": "",
             "not_agent": "❌ id{agent_id} не агент.",
             "invalid_format": "❌ Формат: {text}. Пример: '{example}'.",
             "invalid_id": "❌ Введите корректный ID.",
@@ -101,10 +101,10 @@ class CandyxPEBot:
             "self_agent": "❌ Cannot assign yourself.",
             "already_agent": "❌ id{agent_id} is already an agent.",
             "agent_added": "✅ {role} id{agent_id} assigned.",
-            "agent_added_notify": "✅ You have been assigned as {role} of CandyxPE!",
+            "agent_added_notify": "",
             "self_remove": "❌ Cannot remove your own role.",
             "agent_removed": "✅ {role} id{agent_id} removed.",
-            "agent_removed_notify": "❌ You are no longer a {role} of CandyxPE.",
+            "agent_removed_notify": "",
             "not_agent": "❌ id{agent_id} is not an agent.",
             "invalid_format": "❌ Format: {text}. Example: '{example}'.",
             "invalid_id": "❌ Enter a valid ID.",
@@ -460,7 +460,6 @@ class CandyxPEBot:
                 self.agents[f"{agent_id}"] = {"role": role}
                 self._save_file('candyxpe_agents.json', self.agents)
                 self._send_message(user_id, "agent_added", self._get_keyboard("admin", user_id), {"role": role.capitalize(), "agent_id": agent_id})
-                self._send_message(agent_id, "agent_added_notify", self._get_keyboard("main", agent_id), {"role": role})
                 self._send_to_admin(user_id, f"{role.capitalize()} id{agent_id} назначен.", "add_agent")
             self.user_action_mode.pop(user_id, None)
         except ValueError:
@@ -477,7 +476,6 @@ class CandyxPEBot:
                 del self.agents[f"{agent_id}"]
                 self._save_file('candyxpe_agents.json', self.agents)
                 self._send_message(user_id, "agent_removed", self._get_keyboard("admin", user_id), {"role": role.capitalize(), "agent_id": agent_id})
-                self._send_message(agent_id, "agent_removed_notify", self._get_keyboard("main", agent_id), {"role": role})
                 self._send_to_admin(user_id, f"{role.capitalize()} id{agent_id} снят.", "remove_agent")
             else:
                 self._send_message(user_id, "not_agent", self._get_keyboard("manage_agents", user_id), {"agent_id": agent_id})
