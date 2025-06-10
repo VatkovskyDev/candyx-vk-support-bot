@@ -10,8 +10,8 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 import g4f
 
-VERSION = "0.3.7-BETA"
-CODE_NAME = "MASSIVE-RU-OPTIMIZED"
+VERSION = "0.3.8-PRERELEASE"
+CODE_NAME = "EASY"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,7 +24,7 @@ class VkApiWrapper:
     def __init__(self, vk_api):
         self.vk_api = vk_api
         self.last_call = 0
-        self.rate_limit = 0.34
+        self.rate_limit = 0.35
 
     def call(self, method, **kwargs):
         now = time.time()
@@ -39,7 +39,7 @@ class VkApiWrapper:
 
 class CandyxPEBot:
     _MESSAGES = {
-        "welcome": "👋 Добро пожаловать в бота тех.поддержки CandyxPE!\nВыберите действие:",
+        "welcome": "👋 Добро пожаловать в бота тех. поддержки CandyxPE!\nВыберите действие:",
         "unknown": "❌ Неизвестная команда.",
         "ai_on": "🤖 ИИ-Агент активирован! Задавайте вопросы.",
         "human_on": "👨‍💻 Вы подключены к агенту. Опишите проблему.",
@@ -154,6 +154,7 @@ class CandyxPEBot:
     def _load_file(self, path, default, text=False):
         if not os.path.exists(path):
             self._save_file(path, default)
+            return default
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read().strip() if text else json.load(f)
@@ -186,10 +187,10 @@ class CandyxPEBot:
     def _get_user_info(self, user_id):
         try:
             user = self.vk.call("users.get", user_ids=user_id)[0]
-            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}]\n📲 Диалог: https://vk.com/gim230630628?sel={user_id}\nНезамедлительно рассмотрите обращение пользователя, в противном случае - предупреждение."
+            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}]\n📲 Диалог: https://vk.com/gim{self.group_id}?sel={user_id}\nНезамедлительно рассмотрите обращение пользователя."
         except Exception as e:
             logger.error(f"Ошибка получения информации о пользователе {user_id}: {e}", extra={'user_id': user_id})
-            return f"\n👤 Пользователь: [id{user_id}|id{user_id}]\n📲 Диалог: https://vk.com/im?sel={user_id}\nНезамедлительно рассмотрите обращение пользователя, в противном случае - предупреждение."
+            return f"\n👤 Пользователь: [id{user_id}|id{user_id}]\n📲 Диалог: https://vk.com/im?sel={user_id}\nНезамедлительно рассмотрите обращение пользователя."
 
     def is_agent(self, user_id):
         return str(user_id) in self.agents
@@ -199,6 +200,9 @@ class CandyxPEBot:
 
     def clean_message(self, message):
         return message.replace('{}', '').replace('{{', '').replace('}}', '').strip()
+
+    def clean_ai_response(self, response):
+        return response.replace('*', '').strip()
 
     @lru_cache(maxsize=32)
     def _get_keyboard(self, mode, user_id=None):
@@ -221,6 +225,7 @@ class CandyxPEBot:
             "manage_agents": [
                 [{"action": {"type": "text", "payload": {"command": "add_agent"}, "label": "➕ Добавить агента"}, "color": "positive"}],
                 [{"action": {"type": "text", "payload": {"command": "remove_agent"}, "label": "➖ Удалить агента"}, "color": "negative"}],
+                [{"action": {"type": "text", "payload": {"command": "getagents"}, "label": "📋 Список агентов"}, "color": "secondary"}],
                 [{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔙 Назад"}, "color": "secondary"}]
             ],
             "ban_user": [
@@ -230,7 +235,7 @@ class CandyxPEBot:
             ]
         }
         buttons = keyboards.get(mode, keyboards["main"])
-        if user_id and mode == "main" and self.is_agent(user_id):
+        if user_id and mode == "main" and self.is_admin(user_id):
             buttons.insert(0, [{"action": {"type": "text", "payload": {"command": "admin_panel"}, "label": "🛠 Панель администратора"}, "color": "positive"}])
         return {"one_time": False, "buttons": buttons}
 
@@ -355,7 +360,7 @@ class CandyxPEBot:
                 timeout=20
             )
             if isinstance(response, str) and response.strip():
-                cleaned_response = self.clean_message(response)
+                cleaned_response = self.clean_ai_response(response)
                 self.user_contexts[user_id].append({"role": "assistant", "content": cleaned_response})
                 if len(cleaned_response) > 4096:
                     cleaned_response = cleaned_response[:4090] + "..."
@@ -384,10 +389,10 @@ class CandyxPEBot:
 
     def _handle_add_agent(self, user_id, text):
         try:
-            parts = text.split()
-            if len(parts) != 2 or parts[1] not in ["agent", "admin", "manager"]:
+            parts = text.strip().split()
+            if len(parts) != 2 or parts[1].lower() not in ["agent", "admin", "manager"]:
                 raise ValueError
-            agent_id, role = int(parts[0]), parts[1]
+            agent_id, role = int(parts[0]), parts[1].lower()
             if agent_id == user_id:
                 self._send_message(user_id, "self_agent", self._get_keyboard("manage_agents", user_id))
             elif str(agent_id) in self.agents:
@@ -395,7 +400,7 @@ class CandyxPEBot:
             else:
                 self.agents[str(agent_id)] = {"role": role}
                 self._save_file('candyxpe_agents.json', self.agents)
-                self._send_message(user_id, "agent_added", self._get_keyboard("admin", user_id), {"role": role.capitalize(), "agent_id": agent_id})
+                self._send_message(user_id, "agent_added", self._get_keyboard("manage_agents", user_id), {"role": role.capitalize(), "agent_id": agent_id})
                 self._send_to_admin(user_id, f"{role.capitalize()} @id{agent_id} назначен.", "add_agent")
             self.user_action_mode.pop(user_id, None)
         except ValueError:
@@ -403,14 +408,14 @@ class CandyxPEBot:
 
     def _handle_remove_agent(self, user_id, text):
         try:
-            agent_id = int(text)
+            agent_id = int(text.strip())
             if agent_id == user_id:
                 self._send_message(user_id, "self_remove", self._get_keyboard("manage_agents", user_id))
             elif str(agent_id) in self.agents:
                 role = self.agents[str(agent_id)]["role"]
                 del self.agents[str(agent_id)]
                 self._save_file('candyxpe_agents.json', self.agents)
-                self._send_message(user_id, "agent_removed", self._get_keyboard("admin", user_id), {"role": role.capitalize(), "agent_id": agent_id})
+                self._send_message(user_id, "agent_removed", self._get_keyboard("manage_agents", user_id), {"role": role.capitalize(), "agent_id": agent_id})
                 self._send_to_admin(user_id, f"{role.capitalize()} @id{agent_id} снят.", "remove_agent")
             else:
                 self._send_message(user_id, "not_agent", self._get_keyboard("manage_agents", user_id), {"agent_id": agent_id})
@@ -419,15 +424,15 @@ class CandyxPEBot:
             self._send_message(user_id, "invalid_id", self._get_keyboard("action", user_id))
 
     def _handle_get_agents(self, user_id):
-        if not self.is_admin(user_id) or self.agents.get(str(user_id), {}).get("role") != "manager":
-            self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+        if not self.is_admin(user_id):
+            self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
             return
-        agents_list = "\n".join([f"@{agent_id} - {role['role'].capitalize()}" for agent_id, role in self.agents.items()])
+        agents_list = "\n".join([f"[@id{agent_id}]({role['role'].capitalize()})" for agent_id, role in self.agents.items()])
         self._send_message(user_id, "get_agents", self._get_keyboard("manage_agents", user_id), {"agents_list": agents_list or "Нет агентов."})
 
     def _handle_stats(self, user_id):
         if not self.is_admin(user_id):
-            self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+            self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
             return
         stats_info = {
             "users": len(self.stats["users"]),
@@ -441,7 +446,7 @@ class CandyxPEBot:
 
     def _handle_ban(self, user_id, text):
         try:
-            parts = text.split()
+            parts = text.strip().split()
             if len(parts) != 2:
                 raise ValueError
             target_id, hours = map(int, parts)
@@ -460,7 +465,7 @@ class CandyxPEBot:
 
     def _handle_unban(self, user_id, text):
         try:
-            target_id = int(text)
+            target_id = int(text.strip())
             if target_id in self.banned_users:
                 del self.banned_users[target_id]
                 self._send_message(user_id, "unbanned", self._get_keyboard("ban_user", user_id), {"target_id": target_id})
@@ -528,7 +533,7 @@ class CandyxPEBot:
             self._send_message(user_id, "cancel", self._get_keyboard("main", user_id))
 
         def admin_panel():
-            if self.is_agent(user_id):
+            if self.is_admin(user_id):
                 self._send_message(user_id, "admin_panel", self._get_keyboard("admin", user_id))
             else:
                 self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
@@ -537,13 +542,13 @@ class CandyxPEBot:
             if self.is_admin(user_id):
                 self._send_message(user_id, "manage_agents", self._get_keyboard("manage_agents", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
 
         def ban_user():
             if self.is_admin(user_id):
                 self._send_message(user_id, "ban_user", self._get_keyboard("ban_user", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
 
         def broadcast():
             if self.is_admin(user_id):
@@ -557,28 +562,28 @@ class CandyxPEBot:
                 self.user_action_mode[user_id] = "add_agent"
                 self._send_message(user_id, "add_agent", self._get_keyboard("action", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
 
         def remove_agent():
             if self.is_admin(user_id):
                 self.user_action_mode[user_id] = "remove_agent"
                 self._send_message(user_id, "remove_agent", self._get_keyboard("action", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
 
         def ban():
             if self.is_admin(user_id):
                 self.user_action_mode[user_id] = "ban"
                 self._send_message(user_id, "ban", self._get_keyboard("action", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
 
         def unban():
             if self.is_admin(user_id):
                 self.user_action_mode[user_id] = "unban"
                 self._send_message(user_id, "unban", self._get_keyboard("action", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
 
         def getagents():
             self._handle_get_agents(user_id)
@@ -641,7 +646,7 @@ class CandyxPEBot:
             self.stats["users"].add(user_id)
             self.stats["messages_processed"] += 1
             if text.startswith('/'):
-                cmd = text[1:]
+                cmd = text[1:].strip()
                 self._handle_command(user_id, cmd)
                 return
             if hasattr(event, 'payload') and event.payload:
@@ -663,8 +668,12 @@ class CandyxPEBot:
                         if att_type in ['photo', 'video', 'doc']:
                             owner_id = att[att_type].get('owner_id')
                             att_id = att[att_type].get('id')
+                            access_key = att[att_type].get('access_key')
                             if owner_id and att_id:
-                                attachments.append(f"{att_type}{owner_id}_{att_id}")
+                                attachment = f"{att_type}{owner_id}_{att_id}"
+                                if access_key:
+                                    attachment += f"_{access_key}"
+                                attachments.append(attachment)
                 cleaned_text = self.clean_message(text)
                 self._send_to_admin(user_id, cleaned_text, "agent", ",".join(attachments) if attachments else None)
                 return
@@ -676,8 +685,12 @@ class CandyxPEBot:
                         if att_type in ['photo', 'video', 'doc']:
                             owner_id = att[att_type].get('owner_id')
                             att_id = att[att_type].get('id')
+                            access_key = att[att_type].get('access_key')
                             if owner_id and att_id:
-                                attachments.append(f"{att_type}{owner_id}_{att_id}")
+                                attachment = f"{att_type}{owner_id}_{att_id}"
+                                if access_key:
+                                    attachment += f"_{access_key}"
+                                attachments.append(attachment)
                 cleaned_text = self.clean_message(text)
                 self._process_action(user_id, self.user_action_mode[user_id], cleaned_text, ",".join(attachments) if attachments else None)
                 return
