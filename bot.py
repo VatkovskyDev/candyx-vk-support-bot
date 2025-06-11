@@ -10,8 +10,8 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 import g4f
 
-VERSION = "0.3.8-PRERELEASE"
-CODE_NAME = "EASY"
+VERSION = "0.3.7-BETA"
+CODE_NAME = "MASSIVE-RU-OPTIMIZED"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,7 +24,7 @@ class VkApiWrapper:
     def __init__(self, vk_api):
         self.vk_api = vk_api
         self.last_call = 0
-        self.rate_limit = 0.35
+        self.rate_limit = 0.34
 
     def call(self, method, **kwargs):
         now = time.time()
@@ -39,74 +39,74 @@ class VkApiWrapper:
 
 class CandyxPEBot:
     _MESSAGES = {
-        "welcome": "👋 Добро пожаловать в бота тех. поддержки CandyxPE!\nВыберите действие:",
-        "unknown": "❌ Неизвестная команда.",
-        "ai_on": "🤖 ИИ-Агент активирован! Задавайте вопросы.",
-        "human_on": "👨‍💻 Вы подключены к агенту. Опишите проблему.",
-        "human_off": "👋 Вы вернулись в режим бота.",
-        "report_staff": "⚠️ Жалоба на персонал\nОпишите ситуацию:",
-        "report_bug": "🐛 Сообщите о баге\nОпишите проблему:",
-        "ai_off": "👋 Вы вышли из режима ИИ.",
-        "cancel": "✅ Действие отменено.",
-        "admin_denied": "⛔ Доступ запрещён.",
-        "admin_panel": "🛠 Панель управления\nВыберите действие:",
-        "manage_agents": "👥 Управление агентами\nВыберите действие:",
-        "ban_user": "⛔ Управление банами\nВыберите действие:",
-        "broadcast": "📢 Введите текст объявления:",
-        "add_agent": "➕ Введите ID и роль (agent/admin/manager, например, '123456 agent'):",
-        "remove_agent": "➖ Введите ID для снятия роли:",
-        "ban": "⛔ Введите ID и часы бана (например, '123456 24'):",
-        "unban": "✅ Введите ID для разбана:",
-        "no_input": "❌ Введите данные.",
-        "report_staff_sent": "✅ Жалоба отправлена.",
-        "report_bug_sent": "✅ Сообщение о баге отправлено.",
-        "report_staff_failed": "❌ Ошибка отправки жалобы.",
-        "report_bug_failed": "❌ Ошибка отправки сообщения о баге.",
-        "broadcast_sent": "✅ Объявление отправлено.",
-        "broadcast_failed": "❌ Ошибка отправки объявления.",
-        "self_agent": "❌ Нельзя назначить себя.",
-        "already_agent": "❌ id{agent_id} уже агент.",
-        "agent_added": "✅ {role} id{agent_id} назначен.",
-        "self_remove": "❌ Нельзя снять роль с себя.",
-        "agent_removed": "✅ {role} id{agent_id} снят.",
-        "not_agent": "❌ id{agent_id} не агент.",
-        "invalid_format": "❌ Формат: {text}. Пример: '{example}'.",
-        "invalid_id": "❌ Введите корректный ID.",
-        "self_ban": "❌ Нельзя забанить себя.",
-        "agent_ban": "❌ Нельзя забанить агента.",
-        "banned": "⛔ id{target_id} забанен на {hours} часов.",
-        "banned_notify": "⛔ Вы заблокированы на {hours} часов.",
-        "unbanned": "✅ id{target_id} разбанен.",
-        "unbanned_notify": "✅ Вы разблокированы.",
-        "not_banned": "❌ id{target_id} не забанен.",
-        "banned_user": "⛔ Вы заблокированы. Попробуйте позже.",
-        "chat_unavailable": "❌ Админ-чат недоступен.",
-        "error": "❌ Ошибка. Попробуйте снова.",
-        "get_agents": "📋 Список агентов:\n{agents_list}",
-        "version": "🚀 Версия бота: {version} ({code_name})",
-        "stats": "📊 Статистика:\nПользователей: {users}\nАктивных сессий: {sessions}\nБанов: {bans}",
-        "message_too_long": "❌ Сообщение слишком длинное. Максимум 4096 символов.",
-        "permission_denied": "❌ Пожалуйста, разрешите сообщения от группы в настройках."
+        "welcome": "😘 Добро пожаловать в интеллектуальную экосистему нашего инновационного проекта!\n\nДля оптимальной интеграции и продуктивного сотрудничества с нашей передовой системой предлагаем вам осуществить осознанный выбор одного из нижеследующих приоритетных направлений деятельности, строго соответствующего вашему уникальному вектору амбиций и каких-либо целевых установок.\n\n╰─> Официальное сообщество — эксклюзивный ресурс, предоставляющий доступ к исчерпывающей информации о ключевых аспектах функционирования нашего перспективного проекта.",
+        "unknown": "▸ К сожалению, нашей системе не удалось распознать Вашу команду.",
+        "ai_on": "🤖 Искусственный интеллект успешно запущен! Обращайтесь с вопросами любого уровня сложности — аналитика и компетентность гарантированы.",
+        "human_on": "📣 Интеллектуальный агент интегрирован в Ваш канал коммуникации.\n\nПрошу Вас подробно изложить суть вопроса или ситуации, требующей анализа и выработки оптимального подхода к решению. Ваше точное описание существенно повысит эффективность последующей консультации и разработку рекомендаций.",
+        "human_off": "▸ Вы вернулись в главное меню!",
+        "report_staff": "⦿ Подача жалоба на персонал нашего проекта.\n\n▸ Внимание: подача жалобы на сотрудников требует обстоятельного и взвешенного описания обстоятельств дела. Неправильно составленная жалоба может привести к блокировке аккаунта. Подробно изложите факты, обстоятельства и доказательства нарушений.",
+        "report_bug": "*️⃣ При обнаружении какого-либо недочета или оплошности, пожалуйста, свяжитесь с агентом технической поддержки, нажав на соотвествующую кнопку.",
+        "ai_off": "✱ Вы покинули среду искуственного интеллекта. Если у Вас сформировался какой-либо вопрос — необходимо обратиться к специалистам, нажав на соотвествующую кнопку.",
+        "cancel": "▸ Действие было отменено! Выберите то действие, которое Вам необходимо для успешного взаимодействия.",
+        "admin_denied": "╰─> Доступ к данному действию ограничен. Пожалуйста, будьте внимательны при написании каких-либо команд.",
+        "admin_panel": "▪️Вы попали в панель администратирования [vk.com/candyxhelp|службы Поддержки] нашего проекта. Ваша задача — выбрать действие, которое будет обработано системой.",
+        "manage_agents": "◾ Надзор за сотрудниками службы технической поддержки. Ваша задача — выбрать действие, которое будет обработано системой.",
+        "ban_user": "⦿ Управление блокировками пользователей. Ваша задача — выбрать действие, которое будет обработано системой.\n\n╰─> Дорогие коллеги! Пожалуйста, ознакомьтесь с [vk.com/topic-230626581_54557249|правилами нашего проекта], чтобы не получить предупреждение от [vk.com/id763589554|СЕО] или [vk.com/id1044729621|СОО].",
+        "broadcast": "◾ Пожалуйста, введите текст объявления.",
+        "add_agent": "▸ Укажите идентификатор пользователя и его роль. Используйте образец: '123456789 (agent/admin/manager)'\n\n╰─> При необходимости Вы можете воспользоваться сервисом для получения цифровых идентификаторов: regvk.com/id.",
+        "remove_agent": "▸ Введите идентификатор, чтобы убрать роль у какого-либо пользователя.",
+        "ban": "◾ Укажите идентификатор и часы блокировки. Используйте образец: '123456789 24'. \n\n╰─> При необходимости Вы можете воспользоваться сервисом для получения цифровых идентификаторов: regvk.com/id.",
+        "unban": "✱ Укажите, пожалуйста, идентификатор для разблокировки.",
+        "no_input": "▸ Сожалеем, но Вы не ввели данные, следовательно, система не может инициализировать ответ.",
+        "report_staff_sent": "▸ Жалоба была отправлена. Когда специалист освободится, он рассмотрит Ваш запрос в кратчайшие сроки.",
+        "report_bug_sent": "▸ Недочёт был зафиксирован! Благодарим Вас за бдительность к деталям. Не беспокойтесь, наши сотрудники, как верные блюстители правил, готовы устранить его в любое удобное для Вас время.",
+        "report_staff_failed": "▸ При отправки жалобы возникла ошибка. Просьба пересмотреть свою команду, чтобы убедиться в корректности действий.",
+        "report_bug_failed": "▸ При отправки недочета возникла ошибка. Просьба пересмотреть свою команду, чтобы убедиться в корректности действий.",
+        "broadcast_sent": "⦿ Данное объявление отправлено всем сотрудникам!",
+        "broadcast_failed": "▸ Ошибка отправки объявления. Пожалуйста, пересмотрите свою команду.",
+        "self_agent": "◾ Вы, к сожалению, не можете назначить самого себя специалистом технической поддержки.",
+        "already_agent": "╰─> Пользователь @id{agent_id} уже является специалистом технической поддержки.",
+        "agent_added": "╰─> {role} @id{agent_id} было успешно присвоено соотвествующая роль.",
+        "self_remove": "▸ Сожалеем, но Вы не можете понизить с самого себя роль.",
+        "agent_removed": "╰─> {role} @id{agent_id} была успешно присвоена роль пользователя.",
+        "not_agent": "⦿ Вы уверены, что @id{agent_id} является специалистом технической поддержки? Наша система обнаружила, что он не является сотрудником нашего проекта.",
+        "invalid_format": "▸ Используйте формат: {text}. Пример: '{example}'.",
+        "invalid_id": "▸ Укажите, пожалуйста, корректный идентификатор.",
+        "self_ban": "╰─> Сожалеем, но Вы не можете заблокировать самого себя.",
+        "agent_ban": "╰─> Сожалеем, но Вы не можете заблокировать специалиста технической поддержки.",
+        "banned": "▸ БЛОКИРОВКА ПОЛЬЗОВАТЕЛЯ!\n\n╰─> Нарушитель правил: @id{target_id}\n╰─> Срок блокировки: {hours} час(-ов).",
+        "banned_notify": "▸ НАЛОЖЕНА БЛОКИРОВКА\n\n╰─> Причина: [vk.com/topic-230626581_54606105|нарушения правил обращения].\n╰─> Срок блокировки: {hours} час(-ов).\n\nЕсли блокировка произошла ошибочно — напишите [vk.com/id763589554|СЕО] или [vk.com/id1044729621|СОО].",
+        "unbanned": "◾ Пользователь @id{target_id} был успешно разблокирован.",
+        "unbanned_notify": "▸ БЛОКИРОВКА ОТМЕНЕНА\n\n╰─> Причина: по решению вышестоящего руководства нашего проекта.",
+        "not_banned": "▸ Сожалеем, но @id{target_id} не заблокирован в нашей системе.",
+        "banned_user": "▸ Пока наложена блокировка, Вы не можете взаимодействовать с нашей системой.",
+        "chat_unavailable": "⦿ Конференция недоступна! Обратитесь, пожалуйста, к [vk.com/id1044729621|СОО].",
+        "error": "◾ Произошла ошибка! Пожалуйста, попробуйте позже.",
+        "get_agents": "▸ Список специалистов технической поддержки нашего проекта:\n{agents_list}",
+        "version": "⦿ Версия системы: {version} ({code_name})",
+        "stats": "▸ Статистика системы:\nПользователей: {users}\nАктивных сессий: {sessions}\nБлокировок: {bans}",
+        "message_too_long": "◾ Сообщение слишком длинное. 4096 символов — тот максимум, который Вы можете отправить.",
+        "permission_denied": "◾ Пожалуйста, разрешите сообщения от группы в её настройках."
     }
 
     _PREFIXES = {
-        "staff": "🚨 ЖАЛОБА НА ПЕРСОНАЛ",
-        "bug": "🐛 СООБЩЕНИЕ О БАГЕ",
-        "agent": "✅ ПЕРЕКЛЮЧЕНИЕ НА АГЕНТА",
-        "broadcast": "📢 ОБЪЯВЛЕНИЕ",
-        "ban": "⛔ БАН ПОЛЬЗОВАТЕЛЯ",
-        "unban": "✅ РАЗБАН ПОЛЬЗОВАТЕЛЯ",
-        "add_agent": "➕ ДОБАВЛЕНИЕ АГЕНТА",
-        "remove_agent": "➖ УДАЛЕНИЕ АГЕНТА"
+        "staff": "📝 НАРУШЕНИЕ ПЕРСОНАЛА",
+        "bug": "⚠️ ТЕХНИЧЕСКАЯ ОШИБКА",
+        "agent": "✉️ СВЯЗЬ С ОПЕРАТОРОМ",
+        "broadcast": "📢 ОБЩЕЕ ОБЪЯВЛЕНИЕ",
+        "ban": "🔒 НАЛОЖЕНИЕ БЛОКИРОВКИ",
+        "unban": "🔓 РАЗБЛОКИРОВКА ДОСТУПА",
+        "add_agent": "👥 ДОБАВЛЕНИЕ СОТРУДНИКА",
+        "remove_agent": "🗑 УДАЛЕНИЕ СОТРУДНИКА"
     }
 
     _ERROR_MSGS = {
-        917: "❌ Сообщество не имеет прав администратора в чате.",
-        912: "❌ Включите функцию чат-бота в настройках!",
-        27: "❌ Метод недоступен для токена сообщества.",
-        901: "❌ Нет прав для отправки сообщений.",
-        100: "❌ Неверный параметр. Проверьте данные.",
-        15: "❌ Доступ запрещён. Пользователь отключил сообщения от группы."
+        917: "▸ Сообщество не имеет прав администратора в конференции.",
+        912: "▸ Включите функцию чат-бота в настройках!",
+        27: "▸ Метод недоступен для токена сообщества.",
+        901: "▸ Нет прав для отправки сообщений.",
+        100: "▸ Неверный параметр. Проверьте данные.",
+        15: "▸ Доступ запрещён. Пользователь отключил сообщения от группы."
     }
 
     def __init__(self, vk_token, admin_chat_id, group_id):
@@ -129,7 +129,7 @@ class CandyxPEBot:
         self.stats = {"messages_processed": 0, "users": set()}
         self.spam_protection = {}
         self.system_prompt = (
-            "Ты - ИИ-ассистент техподдержки игрового проекта CandyxPE. Отвечай только на русском, строго по темам, связанным с CandyxPE, включая технические вопросы, геймплей, баги и поддержку пользователей. Используй правила CandyxPE для ответов на вопросы о них:\n{rules}\n\n"
+            "Ты - ИИ-ассистент техподдержки игрового проекта CandyxPE. Отвечай только на русском, строго по темам, связанным с проектом, включая технические вопросы, геймплей, баги и поддержку пользователей. Используй правила CandyxPE для ответов на вопросы о них:\n{rules}\n\n"
             "Твой тон должен быть вежливым, профессиональным и лаконичным. Отвечай на вопросы о правилах точно, ссылаясь на конкретные пункты, если они указаны в запросе. Например, если спрашивают о пункте 3.1, найди и процитируй его из правил. Если пункт не найден, укажи, что такого пункта нет, и предложи уточнить запрос.\n"
             "Не предоставляй код, инструкции по взлому или информацию, не связанную с CandyxPE. Если запрос неясен или выходит за рамки твоих функций, отвечай: 'Уточните детали или обратитесь к агенту.'\n"
             "Примеры ответов:\n- На вопрос о баге: 'Опишите проблему подробнее, включая ваш ID и обстоятельства.'\n- На вопрос о правиле: 'Пункт 3.1 гласит: [цитата из правил].'\n"
@@ -154,7 +154,6 @@ class CandyxPEBot:
     def _load_file(self, path, default, text=False):
         if not os.path.exists(path):
             self._save_file(path, default)
-            return default
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read().strip() if text else json.load(f)
@@ -187,10 +186,10 @@ class CandyxPEBot:
     def _get_user_info(self, user_id):
         try:
             user = self.vk.call("users.get", user_ids=user_id)[0]
-            return f"\n👤 Пользователь: [id{user_id}|{user['first_name']} {user['last_name']}]\n📲 Диалог: https://vk.com/gim{self.group_id}?sel={user_id}\nНезамедлительно рассмотрите обращение пользователя."
+            return f"\n👤 [id{user_id}|{user['first_name']} {user['last_name']}]\n◾ Диалог: [vk.com/gim230630628?sel={user_id}|перейти по ссылке]\n╰─> Незамедлительно рассмотрите обращение пользователя, в противном случае - предупреждение."
         except Exception as e:
             logger.error(f"Ошибка получения информации о пользователе {user_id}: {e}", extra={'user_id': user_id})
-            return f"\n👤 Пользователь: [id{user_id}|id{user_id}]\n📲 Диалог: https://vk.com/im?sel={user_id}\nНезамедлительно рассмотрите обращение пользователя."
+            return f"\n👤 [id{user_id}|id{user_id}]\n◾ Диалог: [vk.com/gim230630628?sel={user_id}|перейти по ссылке]\n╰─> Незамедлительно рассмотрите обращение пользователя, в противном случае - предупреждение."
 
     def is_agent(self, user_id):
         return str(user_id) in self.agents
@@ -201,42 +200,38 @@ class CandyxPEBot:
     def clean_message(self, message):
         return message.replace('{}', '').replace('{{', '').replace('}}', '').strip()
 
-    def clean_ai_response(self, response):
-        return response.replace('*', '').strip()
-
     @lru_cache(maxsize=32)
     def _get_keyboard(self, mode, user_id=None):
         keyboards = {
             "main": [
-                [{"action": {"type": "text", "payload": {"command": "ai_agent"}, "label": "🤖 ИИ-Агент"}, "color": "primary"}],
-                [{"action": {"type": "text", "payload": {"command": "contact_agent"}, "label": "👨‍💻 Связь с агентом"}, "color": "secondary"}],
-                [{"action": {"type": "text", "payload": {"command": "report_staff"}, "label": "👤 Жалоба на персонал"}, "color": "negative"}],
-                [{"action": {"type": "text", "payload": {"command": "report_bug"}, "label": "🐛 Сообщить о баге"}, "color": "secondary"}]
+                [{"action": {"type": "text", "payload": {"command": "ai_agent"}, "label": "🤖 ПОДДЕРЖКА ИНТЕЛЛЕКТА"}, "color": "primary"}],
+                [{"action": {"type": "text", "payload": {"command": "contact_agent"}, "label": "🧑‍💼 СВЯЗЬ С ОПЕРАТОРОМ"}, "color": "secondary"}],
+                [{"action": {"type": "text", "payload": {"command": "report_staff"}, "label": "📋 ЖАЛОБА НА ПЕРСОНАЛ"}, "color": "negative"}],
+                [{"action": {"type": "text", "payload": {"command": "report_bug"}, "label": "ℹ️ ВОЗНИКЛА НЕПОЛАДКА"}, "color": "secondary"}]
             ],
-            "ai": [[{"action": {"type": "text", "payload": {"command": "end_ai"}, "label": "🔙 Выйти из ИИ"}, "color": "negative"}]],
-            "human": [[{"action": {"type": "text", "payload": {"command": "end_human"}, "label": "🔙 Назад"}, "color": "negative"}]],
-            "action": [[{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "❌ Отмена"}, "color": "negative"}]],
+            "ai": [[{"action": {"type": "text", "payload": {"command": "end_ai"}, "label": "🔄 ЗАВЕРШИТЬ ПОДДЕРЖКУ"}, "color": "negative"}]],
+            "human": [[{"action": {"type": "text", "payload": {"command": "end_human"}, "label": "🔄 ВЕРНУТЬСЯ НАЗАД"}, "color": "negative"}]],
+            "action": [[{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔄 АННУЛИРОВАТЬ ОПЕРАЦИЮ"}, "color": "negative"}]],
             "admin": [
-                [{"action": {"type": "text", "payload": {"command": "manage_agents"}, "label": "👥 Управление агентами"}, "color": "primary"}],
-                [{"action": {"type": "text", "payload": {"command": "ban_user"}, "label": "⛔ Блокировка в системе"}, "color": "negative"}],
-                [{"action": {"type": "text", "payload": {"command": "broadcast"}, "label": "📢 Отправить объявление"}, "color": "positive"}],
-                [{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔙 Назад"}, "color": "negative"}]
+                [{"action": {"type": "text", "payload": {"command": "manage_agents"}, "label": "🧑‍🏫 УПРАВЛЕНИЕ ШТАТОМ"}, "color": "primary"}],
+                [{"action": {"type": "text", "payload": {"command": "ban_user"}, "label": "⛏ БЛОКИРОВКА ПОЛЬЗОВАТЕЛЯ"}, "color": "negative"}],
+                [{"action": {"type": "text", "payload": {"command": "broadcast"}, "label": "📢 МАССОВОЕ ОПОВЕЩЕНИЕ"}, "color": "positive"}],
+                [{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔄 ВЕРНУТЬСЯ НАЗАД"}, "color": "negative"}]
             ],
             "manage_agents": [
-                [{"action": {"type": "text", "payload": {"command": "add_agent"}, "label": "➕ Добавить агента"}, "color": "positive"}],
-                [{"action": {"type": "text", "payload": {"command": "remove_agent"}, "label": "➖ Удалить агента"}, "color": "negative"}],
-                [{"action": {"type": "text", "payload": {"command": "getagents"}, "label": "📋 Список агентов"}, "color": "secondary"}],
-                [{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔙 Назад"}, "color": "secondary"}]
+                [{"action": {"type": "text", "payload": {"command": "add_agent"}, "label": "👥 ДОБАВИТЬ СОТРУДНИКА"}, "color": "positive"}],
+                [{"action": {"type": "text", "payload": {"command": "remove_agent"}, "label": "🗑 УДАЛИТЬ СОТРУДНИКА"}, "color": "negative"}],
+                [{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔄 ВЕРНУТЬСЯ НАЗАД"}, "color": "secondary"}]
             ],
             "ban_user": [
-                [{"action": {"type": "text", "payload": {"command": "ban"}, "label": "⛔ Забанить"}, "color": "negative"}],
-                [{"action": {"type": "text", "payload": {"command": "unban"}, "label": "✅ Разбанить"}, "color": "positive"}],
-                [{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔙 Назад"}, "color": "secondary"}]
+                [{"action": {"type": "text", "payload": {"command": "ban"}, "label": "🔒 ЗАБЛОКИРОВАТЬ ДОСТУП"}, "color": "negative"}],
+                [{"action": {"type": "text", "payload": {"command": "unban"}, "label": "🔓 РАЗБЛОКИРОВАТЬ ДОСТУП"}, "color": "positive"}],
+                [{"action": {"type": "text", "payload": {"command": "cancel"}, "label": "🔄 ВЕРНУТЬСЯ НАЗАД"}, "color": "secondary"}]
             ]
         }
         buttons = keyboards.get(mode, keyboards["main"])
-        if user_id and mode == "main" and self.is_admin(user_id):
-            buttons.insert(0, [{"action": {"type": "text", "payload": {"command": "admin_panel"}, "label": "🛠 Панель администратора"}, "color": "positive"}])
+        if user_id and mode == "main" and self.is_agent(user_id):
+            buttons.insert(0, [{"action": {"type": "text", "payload": {"command": "admin_panel"}, "label": "🛠 ПАНЕЛЬ УПРАВЛЕНИЯ"}, "color": "positive"}])
         return {"one_time": False, "buttons": buttons}
 
     def _send_to_admin(self, user_id, message, action, attachments=None):
@@ -247,7 +242,7 @@ class CandyxPEBot:
         except vk_api.exceptions.ApiError as e:
             logger.error(f"Ошибка доступа к чату (код: {e.code})", extra={'user_id': user_id})
             return False
-        prefix = self._PREFIXES.get(action, "✅ СООБЩЕНИЕ")
+        prefix = self._PREFIXES.get(action, "◾ ПРИШЛО СООБЩЕНИЕ!")
         cleaned_message = self.clean_message(message)
         params = {
             "chat_id": self.admin_chat_id,
@@ -273,7 +268,7 @@ class CandyxPEBot:
         for uid in self.agents:
             if int(uid) not in self.banned_users:
                 try:
-                    self._send_message(int(uid), f"📢 Объявление CandyxPE:\n{cleaned_message}", self._get_keyboard("main", int(uid)))
+                    self._send_message(int(uid), f"📢 МАССОВОЕ ОПОВЕЩЕНИЕ:\n{cleaned_message}", self._get_keyboard("main", int(uid)))
                     sent_count += 1
                 except vk_api.exceptions.ApiError as e:
                     if e.code != 901:
@@ -284,7 +279,7 @@ class CandyxPEBot:
                     logger.error(f"Ошибка отправки пользователю {uid}: {e}", extra={'user_id': user_id})
         if failed:
             logger.warning(f"Не удалось отправить: {', '.join(failed)}", extra={'user_id': user_id})
-        self._send_to_admin(user_id, f"Объявление отправлено {sent_count} пользователям.", "broadcast")
+        self._send_to_admin(user_id, f"📢 Объявление отправлено {sent_count} пользователям.", "broadcast")
         return True
 
     def _send_message(self, user_id, message_key, keyboard=None, info=None):
@@ -360,7 +355,7 @@ class CandyxPEBot:
                 timeout=20
             )
             if isinstance(response, str) and response.strip():
-                cleaned_response = self.clean_ai_response(response)
+                cleaned_response = self.clean_message(response)
                 self.user_contexts[user_id].append({"role": "assistant", "content": cleaned_response})
                 if len(cleaned_response) > 4096:
                     cleaned_response = cleaned_response[:4090] + "..."
@@ -368,7 +363,7 @@ class CandyxPEBot:
             return self._MESSAGES["error"]
         except Exception as e:
             logger.error(f"Ошибка ИИ: {e}", extra={'user_id': user_id})
-            return f"❌ Ошибка. Обратитесь к поддержке CandyxPE."
+            return f"◾ Произошла ошибка. Пожалуйста, обратитесь в службу технической пооддержки."
 
     def _handle_report(self, user_id, action, text, attachments=None):
         success_key = f"report_{action}_sent"
@@ -389,10 +384,10 @@ class CandyxPEBot:
 
     def _handle_add_agent(self, user_id, text):
         try:
-            parts = text.strip().split()
-            if len(parts) != 2 or parts[1].lower() not in ["agent", "admin", "manager"]:
+            parts = text.split()
+            if len(parts) != 2 or parts[1] not in ["agent", "admin", "manager"]:
                 raise ValueError
-            agent_id, role = int(parts[0]), parts[1].lower()
+            agent_id, role = int(parts[0]), parts[1]
             if agent_id == user_id:
                 self._send_message(user_id, "self_agent", self._get_keyboard("manage_agents", user_id))
             elif str(agent_id) in self.agents:
@@ -400,7 +395,7 @@ class CandyxPEBot:
             else:
                 self.agents[str(agent_id)] = {"role": role}
                 self._save_file('candyxpe_agents.json', self.agents)
-                self._send_message(user_id, "agent_added", self._get_keyboard("manage_agents", user_id), {"role": role.capitalize(), "agent_id": agent_id})
+                self._send_message(user_id, "agent_added", self._get_keyboard("admin", user_id), {"role": role.capitalize(), "agent_id": agent_id})
                 self._send_to_admin(user_id, f"{role.capitalize()} @id{agent_id} назначен.", "add_agent")
             self.user_action_mode.pop(user_id, None)
         except ValueError:
@@ -408,14 +403,14 @@ class CandyxPEBot:
 
     def _handle_remove_agent(self, user_id, text):
         try:
-            agent_id = int(text.strip())
+            agent_id = int(text)
             if agent_id == user_id:
                 self._send_message(user_id, "self_remove", self._get_keyboard("manage_agents", user_id))
             elif str(agent_id) in self.agents:
                 role = self.agents[str(agent_id)]["role"]
                 del self.agents[str(agent_id)]
                 self._save_file('candyxpe_agents.json', self.agents)
-                self._send_message(user_id, "agent_removed", self._get_keyboard("manage_agents", user_id), {"role": role.capitalize(), "agent_id": agent_id})
+                self._send_message(user_id, "agent_removed", self._get_keyboard("admin", user_id), {"role": role.capitalize(), "agent_id": agent_id})
                 self._send_to_admin(user_id, f"{role.capitalize()} @id{agent_id} снят.", "remove_agent")
             else:
                 self._send_message(user_id, "not_agent", self._get_keyboard("manage_agents", user_id), {"agent_id": agent_id})
@@ -424,15 +419,15 @@ class CandyxPEBot:
             self._send_message(user_id, "invalid_id", self._get_keyboard("action", user_id))
 
     def _handle_get_agents(self, user_id):
-        if not self.is_admin(user_id):
-            self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
+        if not self.is_admin(user_id) or self.agents.get(str(user_id), {}).get("role") != "manager":
+            self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
             return
-        agents_list = "\n".join([f"[@id{agent_id}]({role['role'].capitalize()})" for agent_id, role in self.agents.items()])
+        agents_list = "\n".join([f"@{agent_id} - {role['role'].capitalize()}" for agent_id, role in self.agents.items()])
         self._send_message(user_id, "get_agents", self._get_keyboard("manage_agents", user_id), {"agents_list": agents_list or "Нет агентов."})
 
     def _handle_stats(self, user_id):
         if not self.is_admin(user_id):
-            self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
+            self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
             return
         stats_info = {
             "users": len(self.stats["users"]),
@@ -446,7 +441,7 @@ class CandyxPEBot:
 
     def _handle_ban(self, user_id, text):
         try:
-            parts = text.strip().split()
+            parts = text.split()
             if len(parts) != 2:
                 raise ValueError
             target_id, hours = map(int, parts)
@@ -465,7 +460,7 @@ class CandyxPEBot:
 
     def _handle_unban(self, user_id, text):
         try:
-            target_id = int(text.strip())
+            target_id = int(text)
             if target_id in self.banned_users:
                 del self.banned_users[target_id]
                 self._send_message(user_id, "unbanned", self._get_keyboard("ban_user", user_id), {"target_id": target_id})
@@ -503,7 +498,7 @@ class CandyxPEBot:
         def contact_agent():
             self.user_human_mode.add(user_id)
             self.user_ai_mode.discard(user_id)
-            self._send_to_admin(user_id, "Игрок подключён к агенту.", "agent")
+            self._send_to_admin(user_id, "✱ Пользователь подключён к специалисту нашего проекта.", "agent")
             self._send_message(user_id, "human_on", self._get_keyboard("human", user_id))
 
         def end_human():
@@ -533,7 +528,7 @@ class CandyxPEBot:
             self._send_message(user_id, "cancel", self._get_keyboard("main", user_id))
 
         def admin_panel():
-            if self.is_admin(user_id):
+            if self.is_agent(user_id):
                 self._send_message(user_id, "admin_panel", self._get_keyboard("admin", user_id))
             else:
                 self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
@@ -542,13 +537,13 @@ class CandyxPEBot:
             if self.is_admin(user_id):
                 self._send_message(user_id, "manage_agents", self._get_keyboard("manage_agents", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
 
         def ban_user():
             if self.is_admin(user_id):
                 self._send_message(user_id, "ban_user", self._get_keyboard("ban_user", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
 
         def broadcast():
             if self.is_admin(user_id):
@@ -562,28 +557,28 @@ class CandyxPEBot:
                 self.user_action_mode[user_id] = "add_agent"
                 self._send_message(user_id, "add_agent", self._get_keyboard("action", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
 
         def remove_agent():
             if self.is_admin(user_id):
                 self.user_action_mode[user_id] = "remove_agent"
                 self._send_message(user_id, "remove_agent", self._get_keyboard("action", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
 
         def ban():
             if self.is_admin(user_id):
                 self.user_action_mode[user_id] = "ban"
                 self._send_message(user_id, "ban", self._get_keyboard("action", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
 
         def unban():
             if self.is_admin(user_id):
                 self.user_action_mode[user_id] = "unban"
                 self._send_message(user_id, "unban", self._get_keyboard("action", user_id))
             else:
-                self._send_message(user_id, "admin_denied", self._get_keyboard("main", user_id))
+                self._send_message(user_id, "admin_denied", self._get_keyboard("admin", user_id))
 
         def getagents():
             self._handle_get_agents(user_id)
@@ -646,7 +641,7 @@ class CandyxPEBot:
             self.stats["users"].add(user_id)
             self.stats["messages_processed"] += 1
             if text.startswith('/'):
-                cmd = text[1:].strip()
+                cmd = text[1:]
                 self._handle_command(user_id, cmd)
                 return
             if hasattr(event, 'payload') and event.payload:
@@ -668,12 +663,8 @@ class CandyxPEBot:
                         if att_type in ['photo', 'video', 'doc']:
                             owner_id = att[att_type].get('owner_id')
                             att_id = att[att_type].get('id')
-                            access_key = att[att_type].get('access_key')
                             if owner_id and att_id:
-                                attachment = f"{att_type}{owner_id}_{att_id}"
-                                if access_key:
-                                    attachment += f"_{access_key}"
-                                attachments.append(attachment)
+                                attachments.append(f"{att_type}{owner_id}_{att_id}")
                 cleaned_text = self.clean_message(text)
                 self._send_to_admin(user_id, cleaned_text, "agent", ",".join(attachments) if attachments else None)
                 return
@@ -685,12 +676,8 @@ class CandyxPEBot:
                         if att_type in ['photo', 'video', 'doc']:
                             owner_id = att[att_type].get('owner_id')
                             att_id = att[att_type].get('id')
-                            access_key = att[att_type].get('access_key')
                             if owner_id and att_id:
-                                attachment = f"{att_type}{owner_id}_{att_id}"
-                                if access_key:
-                                    attachment += f"_{access_key}"
-                                attachments.append(attachment)
+                                attachments.append(f"{att_type}{owner_id}_{att_id}")
                 cleaned_text = self.clean_message(text)
                 self._process_action(user_id, self.user_action_mode[user_id], cleaned_text, ",".join(attachments) if attachments else None)
                 return
@@ -726,7 +713,7 @@ class CandyxPEBot:
 
 if __name__ == "__main__":
     VK_TOKEN = "vk1.a.BfB4WDbOxfqsQLqcONRk3lrcEmTW9BmnMYiU8xLbZKjRUkGDUkdmpvNi2nFMCAzX_lOwYqHBM2VubFepkpraAuBJ50JWXIX0mWfwPbBMbtGbKrOhhZYROaAlkGeqA1L-8Z-aa35kp00rRGjOooH87hoEZmWGxPBhBEg7Q4SC-1S-CoCR2hZp9QEZS7-i8TrfyucOUrFApTJE5N4hhTOG7Q"
-    ADMIN_CHAT_ID = 1
+    ADMIN_CHAT_ID = 2
     GROUP_ID = 230630628
     bot = CandyxPEBot(VK_TOKEN, ADMIN_CHAT_ID, GROUP_ID)
     bot.run()
